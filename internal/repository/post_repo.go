@@ -26,7 +26,7 @@ func (r *PostRepository) FindAll() ([]models.Post, error) {
 
 func (r *PostRepository) FindBySlug(slug string) (*models.Post, error) {
 	var post models.Post
-	err := r.db.Where("status = ?", "published").First(&post).Error
+	err := r.db.Where("slug = ? AND status = ?", slug, "published").First(&post).Error
 	if err != nil {
 		return nil, fmt.Errorf("failed to find post by slug: %w", err)
 	}
