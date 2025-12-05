@@ -51,3 +51,55 @@ type ExperienceList []Experience
 
 type EducationList []Education
 type SocialLinks map[string]string
+
+// Content Block
+func (c ContentBlock) Value() (driver.Value, error) {
+	return json.Marshal(c)
+}
+
+func (c *ContentBlock) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return errors.New("Failed to scan ContentBlock")
+	}
+	return json.Unmarshal(bytes, c)
+}
+
+// Education List
+func (e EducationList) Value() (driver.Value, error) {
+	return json.Marshal(e)
+}
+
+func (e *EducationList) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return errors.New("Failed to scan EducationList")
+	}
+	return json.Unmarshal(bytes, e)
+}
+
+// Experience List
+func (e ExperienceList) Value() (driver.Value, error) {
+	return json.Marshal(e)
+}
+
+func (e *ExperienceList) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return errors.New("Failed to scan ExperienceList")
+	}
+	return json.Unmarshal(bytes, e)
+}
+
+// Social Links
+func (s SocialLinks) Value() (driver.Value, error) {
+	return json.Marshal(s)
+}
+
+func (s *SocialLinks) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return errors.New("Failed to scan SocialLinks")
+	}
+	return json.Unmarshal(bytes, s)
+}
