@@ -31,8 +31,3 @@ func (h *ProjectHandler) GetProject(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"data": project})
 }
-
-func GetProject(c *gin.Context) {
-	slug := c.Param("slug")
-	c.JSON(200, gin.H{"message": "get project by" + slug})
-}
