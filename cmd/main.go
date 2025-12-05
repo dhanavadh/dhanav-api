@@ -1,11 +1,15 @@
 package main
 
 import (
+	"github.com/dhanavadh/dhanav-api/internal/config"
 	"github.com/dhanavadh/dhanav-api/internal/handlers"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	cfg := config.Load()
+
+	gin.SetMode(cfg.GinMode)
 	r := gin.Default()
 
 	api := r.Group("/api/v1")
@@ -19,5 +23,5 @@ func main() {
 
 	r.GET("/health", handlers.HealthCheck)
 
-	r.Run(":8080")
+	r.Run(cfg.ServerPort)
 }
