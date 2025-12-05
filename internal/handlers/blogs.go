@@ -31,8 +31,3 @@ func (h *BlogHandler) GetBlog(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"data": post})
 }
-
-func GetBlog(c *gin.Context) {
-	slug := c.Param("slug")
-	c.JSON(200, gin.H{"message": "blog" + slug})
-}
