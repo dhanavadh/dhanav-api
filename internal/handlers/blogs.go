@@ -14,7 +14,7 @@ func NewBlogHandler(repo *repository.PostRepository) *BlogHandler {
 }
 
 func (h *BlogHandler) GetBlogs(c *gin.Context) {
-	posts, err := h.repo.FindAll()
+	posts, err := h.repo.FindAll("blog")
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -24,7 +24,7 @@ func (h *BlogHandler) GetBlogs(c *gin.Context) {
 
 func (h *BlogHandler) GetBlog(c *gin.Context) {
 	slug := c.Param("slug")
-	post, err := h.repo.FindBySlug(slug)
+	post, err := h.repo.FindBySlug(slug, "blog")
 	if err != nil {
 		c.JSON(404, gin.H{"error": "not found"})
 		return
