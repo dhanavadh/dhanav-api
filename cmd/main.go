@@ -19,8 +19,11 @@ func main() {
 	}
 
 	postRepo := repository.NewPostRepository(db)
+	aboutRepo := repository.NewAboutRepository(db)
+
 	blogHandler := handlers.NewBlogHandler(postRepo)
 	projectHandler := handlers.NewProjectHandler(postRepo)
+	aboutHandler := handlers.NewAboutHandler(aboutRepo)
 
 	gin.SetMode(cfg.GinMode)
 	r := gin.Default()
@@ -32,7 +35,7 @@ func main() {
 	api.GET("/projects", projectHandler.GetProjects)
 	api.GET("/projects/:slug", projectHandler.GetProject)
 
-	api.GET("/about", handlers.GetAbout)
+	api.GET("/about", aboutHandler.Get)
 
 	r.GET("/health", handlers.HealthCheck)
 
