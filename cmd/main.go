@@ -7,6 +7,7 @@ import (
 	"github.com/dhanavadh/dhanav-api/internal/database"
 	"github.com/dhanavadh/dhanav-api/internal/handlers"
 	"github.com/dhanavadh/dhanav-api/internal/repository"
+	"github.com/dhanavadh/dhanav-api/internal/storage"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,24 +19,29 @@ func main() {
 		log.Fatal(err)
 	}
 
+	r2 := storage.NewR2Storage(cfg)
+
 	postRepo := repository.NewPostRepository(db)
 	aboutRepo := repository.NewAboutRepository(db)
 
 	blogHandler := handlers.NewBlogHandler(postRepo)
 	projectHandler := handlers.NewProjectHandler(postRepo)
 	aboutHandler := handlers.NewAboutHandler(aboutRepo)
+	uploadHandler := handlers.NewUploadHandler(r2)
 
 	gin.SetMode(cfg.GinMode)
 	r := gin.Default()
 
-	api := r.Group("/api/v1")
-	api.GET("/blogs", blogHandler.GetBlogs)
-	api.GET("/blogs/:slug", blogHandler.GetBlog)
+	v1 := r.Group("/api/v1")
+	v1.GET("/blogs", blogHandler.GetBlogs)
+	v1.GET("/blogs/:slug", blogHandler.GetBlog)
 
-	api.GET("/projects", projectHandler.GetProjects)
-	api.GET("/projects/:slug", projectHandler.GetProject)
+	v1.GET("/projects", projectHandler.GetProjects)
+	v1.GET("/projects/:slug", projectHandler.GetProject)
 
-	api.GET("/about", aboutHandler.Get)
+	v1.GET("/about", aboutHandler.Get)
+
+	v1.POST("/upload", uploadHandler.UploadFile)
 
 	r.GET("/health", handlers.HealthCheck)
 
